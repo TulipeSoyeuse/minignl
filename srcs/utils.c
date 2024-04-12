@@ -6,13 +6,13 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 14:36:28 by romain            #+#    #+#             */
-/*   Updated: 2024/04/08 16:49:00 by romain           ###   ########.fr       */
+/*   Updated: 2024/04/12 13:49:20 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minignl_priv.h"
 
-int	ft_strlen(char *s)
+int	gnl_strlen(char *s)
 {
 	int	i;
 
@@ -50,7 +50,7 @@ char	*realloc_line(char *line)
 	int		l;
 	int		i;
 
-	l = ft_strlen(line);
+	l = gnl_strlen(line);
 	nl = malloc(l + BUFFER_GNL);
 	i = 0;
 	while (i < l + BUFFER_GNL)

@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:33:59 by romain            #+#    #+#             */
-/*   Updated: 2024/04/08 16:57:09 by romain           ###   ########.fr       */
+/*   Updated: 2024/04/12 13:49:58 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*write_line(const int fd, char *buf, char *line)
 	line = concat_lines(buf, line);
 	while (1)
 	{
-		if (read(fd, &line[ft_strlen(line) - 1], BUFFER_GNL - 1) == 0)
+		if (read(fd, &line[gnl_strlen(line) - 1], BUFFER_GNL - 1) == 0)
 			break ;
 		r = check_read_return_line(line);
 		if (r == LINE_END)
