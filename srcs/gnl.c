@@ -6,7 +6,7 @@
 /*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:33:59 by romain            #+#    #+#             */
-/*   Updated: 2024/04/12 13:49:58 by romain           ###   ########.fr       */
+/*   Updated: 2024/04/12 16:03:21 by romain           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,25 @@ int	check_read_return_line(char *line)
 char	*write_line(const int fd, char *buf, char *line)
 {
 	int	r;
+	int	p;
 
+	p = 0;
 	if (check_read_return_line(buf) == LINE_END_IN_LINE)
 	{
 		cut_buf(line, buf);
 		return (line);
 	}
 	line = concat_lines(buf, line);
+	if (line[0] == 0)
+		p = 1;
 	while (1)
 	{
 		if (read(fd, &line[gnl_strlen(line) - 1], BUFFER_GNL - 1) == 0)
-			break ;
+		{
+			if (p)
+				break ;
+			return (line);
+		}
 		r = check_read_return_line(line);
 		if (r == LINE_END)
 			return (line);
