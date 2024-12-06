@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gnl.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romain <romain@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rdupeux <rdupeux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:33:59 by romain            #+#    #+#             */
-/*   Updated: 2024/04/12 16:03:21 by romain           ###   ########.fr       */
+/*   Updated: 2024/12/06 15:51:58 by rdupeux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,27 @@ int	check_read_return_line(char *line)
 	return (NO_END);
 }
 
-char	*write_line(const int fd, char *buf, char *line)
+char	*r_check(char *line, char *buf)
 {
 	int	r;
-	int	p;
+
+	r = check_read_return_line(line);
+	if (r == LINE_END)
+		return (line);
+	if (r == EOF_INSIDE_LINE || r == LINE_END_IN_LINE)
+	{
+		cut_to_buf(line, buf);
+		return (line);
+	}
+	else
+		line = realloc_line(line);
+	return (NULL);
+}
+
+char	*write_line(const int fd, char *buf, char *line)
+{
+	int		p;
+	char	*rval;
 
 	p = 0;
 	if (check_read_return_line(buf) == LINE_END_IN_LINE)
@@ -71,19 +88,11 @@ char	*write_line(const int fd, char *buf, char *line)
 				break ;
 			return (line);
 		}
-		r = check_read_return_line(line);
-		if (r == LINE_END)
-			return (line);
-		if (r == EOF_INSIDE_LINE || r == LINE_END_IN_LINE)
-		{
-			cut_to_buf(line, buf);
-			return (line);
-		}
-		else
-			line = realloc_line(line);
+		rval = r_check(line, buf);
+		if (rval)
+			return (rval);
 	}
-	free(line);
-	return (NULL);
+	return (free(line), NULL);
 }
 
 char	*get_next_line(const int fd)
